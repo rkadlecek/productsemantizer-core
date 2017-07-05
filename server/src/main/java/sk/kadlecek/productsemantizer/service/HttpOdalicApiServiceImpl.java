@@ -63,14 +63,14 @@ public class HttpOdalicApiServiceImpl implements OdalicApiService {
         add(HttpStatus.SC_OK);
     }};
 
-    private final String URI_AUTH = "/sti/users/authentications";
-    private final String URI_CREATE_TASK = "/sti/tasks/%s"; //PUT
-    private final String URI_RUN_TASK = "/sti/tasks/%s/execution"; //PUT
-    private final String URI_GET_TASK_STATE = "/sti/tasks/%s/state"; // GET
+    private final String URI_AUTH = "/users/authentications";
+    private final String URI_CREATE_TASK = "/tasks/%s"; //PUT
+    private final String URI_RUN_TASK = "/tasks/%s/execution"; //PUT
+    private final String URI_GET_TASK_STATE = "/tasks/%s/state"; // GET
 
-    private final String URI_GET_KNOWLEDGE_BASES = "/sti/bases"; // GET
+    private final String URI_GET_KNOWLEDGE_BASES = "/bases"; // GET
 
-    private final String URI_UPLOAD_FILE = "/sti/files/%s"; // PUT
+    private final String URI_UPLOAD_FILE = "/files/%s"; // PUT
 
     private String authToken = null;
 
@@ -273,6 +273,7 @@ public class HttpOdalicApiServiceImpl implements OdalicApiService {
                 logger.debug("Got reply: {}", reply);
                 return reply;
             } else {
+                logger.debug("Got invalid response: {}", response.getEntity().getContent());
                 throw new OdalicApiException("Unexpected status code: " + response.getStatusLine().getStatusCode() +
                     " (expected one of: [" + String.join(",",
                         expectedHttpStatusCodes
