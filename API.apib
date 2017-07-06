@@ -1,0 +1,158 @@
+FORMAT: 1A
+
+# ProductSemantizer
+
+This is an description of ProductSemantizer-Core API.
+
+# Group Job Input Files
+
+## Job Input File Upload [/files]
+
+### Upload a New Input File [POST]
+
+Upload a new CSV file (in form of a multipart file), which then can be used as an input file for a job.
+
++ Request (multipart/file)
+
++ Response 201 (application/json)
+
+        {
+            "originalFilename": "/home/user/csv/input.csv",
+            "storageFilename": "/a/b/abcdefghtijklmn.csv"
+        }
+
+# Group Jobs
+
+## Jobs [/jobs]
+
+## Retrieve all Jobs [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "title": "Sample Job",
+                "description": "This is a sample job",
+                "createdOn": "2017-06-01 12:00",
+                "inputFilePath": "/a/b/abcdefghtijklmn.csv",
+                "jobStatus": {
+                    "id": 10,
+                    "jobState": 1
+                },
+                "odalicConfiguration": {
+                    "id": 15,
+                    "knowledgeBases": [
+                        {
+                            "id": 1,
+                            "name": "DBPedia.org",
+                            "active": true
+                        }
+                    ]
+                }
+            }
+        ]
+
+## Create a New Job [POST]
+
++ Request (application/json)
+
+        {
+            "title": "Sample Job",
+            "description": "This is a sample job",
+            "inputFilePath": "/a/b/abcdefghtijklmn.csv",
+            "odalicConfiguration": {
+                "knowledgeBases": [
+                    1, 2
+                ]
+            }
+        }
+
++ Response 201 (application/json)
+
+        {
+            "id": 1,
+            "title": "Sample Job",
+            "description": "This is a sample job",
+            "createdOn": "2017-06-01 12:00",
+            "inputFilePath": "/a/b/abcdefghtijklmn.csv",
+            "jobStatus": {
+                "id": 10,
+                "jobState": 1
+            },
+            "odalicConfiguration": {
+                "id": 15,
+                "knowledgeBases": [
+                    {
+                        "id": 1,
+                        "name": "DBPedia.org",
+                        "active": true
+                    }
+                ]
+            }
+        }
+
+## Single Job [/jobs/{id}]
+
++ Parameters
+    + id: `2` (number) - ID of the Job
+
+## Retrieve Job details [GET]
+
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "title": "Sample Job",
+            "description": "This is a sample job",
+            "createdOn": "2017-06-01 12:00",
+            "inputFilePath": "/a/b/abcdefghtijklmn.csv",
+            "jobStatus": {
+                "id": 10,
+                "jobState": 1
+            },
+            "odalicConfiguration": {
+                "id": 15,
+                "knowledgeBases": [
+                    {
+                        "id": 1,
+                        "name": "DBPedia.org",
+                        "active": true
+                    }
+                ]
+            }
+        }
+
+## Job Submission [/jobs/{id}/submit]
+
++ Parameters
+    + id: `2` (number) - ID of the Job to submit
+
+## Submit Job with Id [POST]
+
+Submits (starts the procesing) of the job with given id.
+
++ Response 200 (application/json)
+
+
+
+
+
+
+# Group Knowledge Bases
+
+## Active Knowledge Bases Collection [/knowledge-bases/active]
+
+### Retrieve All Active Knowledge Bases [GET]
+
+Retrieves a list of all supported knowledge bases that are in `active` - and thus may be used in the job.
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "DBPedia.org",
+                "active": true
+            }
+        ]
