@@ -25,6 +25,12 @@ public class Job {
     @Column(name = "input_file_path", nullable = false)
     private String inputFilePath;
 
+    @Column(name = "input_file_column_separator", nullable = false)
+    private Character inputFileColumnSeparator;
+
+    @Column(name = "input_file_column_enclosing", nullable = false)
+    private Character inputFileColumnEnclosing;
+
     @OneToOne(optional = false,
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
@@ -95,5 +101,21 @@ public class Job {
 
     public void setJobStatus(JobStatus jobStatus) {
         this.jobStatus = jobStatus;
+    }
+
+    public Character getInputFileColumnSeparator() {
+        return inputFileColumnSeparator;
+    }
+
+    public void setInputFileColumnSeparator(Character inputFileColumnSeparator) {
+        this.inputFileColumnSeparator = inputFileColumnSeparator;
+    }
+
+    public Character getInputFileColumnEnclosing() {
+        return inputFileColumnEnclosing;
+    }
+
+    public void setInputFileColumnEnclosing(Character inputFileColumnEnclosing) {
+        this.inputFileColumnEnclosing = inputFileColumnEnclosing;
     }
 }

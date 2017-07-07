@@ -3,6 +3,7 @@ package sk.kadlecek.productsemantizer.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cz.cuni.mff.xrg.api.rest.requests.files.FormatRequest;
 import cz.cuni.mff.xrg.api.rest.requests.tasks.*;
 import cz.cuni.mff.xrg.api.rest.requests.users.Credentials;
 import cz.cuni.mff.xrg.api.rest.responses.Reply;
@@ -50,6 +51,10 @@ public class HttpOdalicApiServiceImpl implements OdalicApiService {
         add(HttpStatus.SC_OK);
     }};
 
+    private final List<Integer> EXPECTED_CODES_CONFIGURE_FILE = new ArrayList<Integer>() {{
+        add(HttpStatus.SC_OK);
+    }};
+
     private final List<Integer> EXPECTED_CODES_CREATE_TASK = new ArrayList<Integer>() {{
         add(HttpStatus.SC_CREATED);
         add(HttpStatus.SC_OK);
@@ -71,6 +76,7 @@ public class HttpOdalicApiServiceImpl implements OdalicApiService {
     private final String URI_GET_KNOWLEDGE_BASES = "/bases"; // GET
 
     private final String URI_UPLOAD_FILE = "/files/%s"; // PUT
+    private final String URI_CONFIGURE_FILE = "/files/%s/format"; // PUT
 
     private String authToken = null;
 
@@ -108,11 +114,22 @@ public class HttpOdalicApiServiceImpl implements OdalicApiService {
         return fileIdentifier;
     }
 
+    private void configureUploadedFile(Job job, String odalicFileIdentifier) throws OdalicApiException {
+        String url = String.format(configurationService.getOdalicBaseUri() + URI_CONFIGURE_FILE, odalicFileIdentifier);
+
+        FormatRequest entity = new FormatRequest();
+        entity.setDelimiter(job.getInputFileColumnSeparator());
+        entity.setQuoteCharacter(job.getInputFileColumnEnclosing());
+
+        performPutRequest(url, entity, getAuthToken(), EXPECTED_CODES_CONFIGURE_FILE);
+    }
+
     @Override
     public String createTask(Job job) throws OdalicApiException, FileStorageException {
         Assert.notEmpty(job.getOdalicConfiguration().getKnowledgeBases(), "KnowledgeBases can not be empty!");
 
         String odalicFileIdentifier = uploadJobFile(job);
+        configureUploadedFile(job, odalicFileIdentifier);
 
         String taskId = ConversionUtils.jobTitleToOdalicId(job.getTitle());
         TaskValue taskValue = new TaskValue();

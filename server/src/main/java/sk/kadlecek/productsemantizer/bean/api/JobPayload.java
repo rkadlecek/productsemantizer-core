@@ -12,17 +12,20 @@ public class JobPayload {
     @NotEmpty
     private String title;
     private String description;
-    @NotEmpty
-    private String inputFilePath;
+
+    private InputFileConfigPayload inputFileConfig;
     private OdalicConfigurationPayload odalicConfiguration;
 
     public JobPayload() { super(); }
+
 
     public Job toJob() {
         Job job = new Job();
         job.setTitle(getTitle());
         job.setDescription(getDescription());
-        job.setInputFilePath(getInputFilePath());
+        job.setInputFilePath(inputFileConfig.getPath());
+        job.setInputFileColumnSeparator(inputFileConfig.getSeparator());
+        job.setInputFileColumnEnclosing(inputFileConfig.getColumnEnclosing());
         job.setCreatedOn(new Date());
         job.setOdalicConfiguration(getOdalicConfiguration().toOdalicConfiguration(job));
 
@@ -42,12 +45,12 @@ public class JobPayload {
         this.title = title;
     }
 
-    public String getInputFilePath() {
-        return inputFilePath;
+    public InputFileConfigPayload getInputFileConfig() {
+        return inputFileConfig;
     }
 
-    public void setInputFilePath(String inputFilePath) {
-        this.inputFilePath = inputFilePath;
+    public void setInputFileConfig(InputFileConfigPayload inputFileConfig) {
+        this.inputFileConfig = inputFileConfig;
     }
 
     public String getDescription() {
