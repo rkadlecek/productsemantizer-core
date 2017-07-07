@@ -36,6 +36,8 @@ Upload a new CSV file (in form of a multipart file), which then can be used as a
                 "description": "This is a sample job",
                 "createdOn": "2017-06-01 12:00",
                 "inputFilePath": "/a/b/abcdefghtijklmn.csv",
+                "inputFileColumnSeparator": "|",
+                "inputFileColumnEnclosing": "\"",
                 "jobStatus": {
                     "id": 10,
                     "jobState": 1
@@ -60,7 +62,11 @@ Upload a new CSV file (in form of a multipart file), which then can be used as a
         {
             "title": "Sample Job",
             "description": "This is a sample job",
-            "inputFilePath": "/a/b/abcdefghtijklmn.csv",
+            "inputFileConfig": {
+                "path": "/a/b/abcdefghtijklmn.csv",
+                "separator": "|",
+                "columnEnclosing": "\""
+            },
             "odalicConfiguration": {
                 "knowledgeBases": [
                     1, 2
@@ -76,6 +82,8 @@ Upload a new CSV file (in form of a multipart file), which then can be used as a
             "description": "This is a sample job",
             "createdOn": "2017-06-01 12:00",
             "inputFilePath": "/a/b/abcdefghtijklmn.csv",
+            "inputFileColumnSeparator": "|",
+            "inputFileColumnEnclosing": "\"",
             "jobStatus": {
                 "id": 10,
                 "jobState": 1
